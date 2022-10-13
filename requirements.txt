@@ -2,3 +2,4 @@ flask
 requests
 discord-interactions
 gunicorn
+pymongo[srv]
