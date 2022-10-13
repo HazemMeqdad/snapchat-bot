@@ -21,7 +21,7 @@ def interactions():
     if data["type"] == InteractionType.PING:
         return jsonify({"type": InteractionResponseType.PONG})
     elif data["type"] == InteractionType.APPLICATION_COMMAND:
-        return jsonify(SlashCommands().process(data))
+        return jsonify({"type": InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE, "data": {"content": "Pong!"}})
     elif data["type"] == InteractionType.MESSAGE_COMPONENT:
         ...
     elif data["type"] == InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE:
