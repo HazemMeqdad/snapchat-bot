@@ -21,15 +21,16 @@ def index():
 @app.route("/interactions", methods=["POST"])
 @verify_key_decorator(CLIENT_PUBLIC_KEY)
 def interactions():
-    if request.json["type"] == InteractionType.PING:
+    data = request.json.get("data")
+    if data["type"] == InteractionType.PING:
         return jsonify({"type": InteractionResponseType.PONG})
-    elif request.json["type"] == InteractionType.APPLICATION_COMMAND:
-        return jsonify(SlashCommands().process(request.json))
-    elif request.json["type"] == InteractionType.MESSAGE_COMPONENT:
+    elif data["type"] == InteractionType.APPLICATION_COMMAND:
+        return jsonify(SlashCommands().process(data))
+    elif data["type"] == InteractionType.MESSAGE_COMPONENT:
         ...
-    elif request.json["type"] == InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE:
+    elif data["type"] == InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE:
         ...
-    elif request.json["type"] == InteractionType.MODAL_SUBMIT:
+    elif data["type"] == InteractionType.MODAL_SUBMIT:
         ...
 
 
