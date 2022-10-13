@@ -17,17 +17,16 @@ def index():
 @verify_key_decorator(CLIENT_PUBLIC_KEY)
 def interactions():
     data = request.json.get("data")
-    print(data)
-    if data["type"] == InteractionType.PING:
+    if request.json["type"] == InteractionType.PING:
         return jsonify({"type": InteractionResponseType.PONG})
-    elif data["type"] == InteractionType.APPLICATION_COMMAND:
+    elif request.json["type"] == InteractionType.APPLICATION_COMMAND:
         print(SlashCommands().process(data))
         return jsonify(SlashCommands().process(data))
-    elif data["type"] == InteractionType.MESSAGE_COMPONENT:
+    elif request.json["type"] == InteractionType.MESSAGE_COMPONENT:
         ...
-    elif data["type"] == InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE:
+    elif request.json["type"] == InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE:
         ...
-    elif data["type"] == InteractionType.MODAL_SUBMIT:
+    elif request.json["type"] == InteractionType.MODAL_SUBMIT:
         ...
 
 
