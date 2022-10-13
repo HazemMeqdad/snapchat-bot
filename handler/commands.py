@@ -8,7 +8,7 @@ class SlashCommands:
         return getattr(SlashCommands, data["name"])(data)
 
     @staticmethod
-    def ping_command(data: dict):
+    def ping(data: dict):
         return create_response({
             "content": "Pong!"
         })
