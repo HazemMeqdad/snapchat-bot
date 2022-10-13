@@ -1,7 +1,8 @@
 from .api import fetch, create_response, Embed
 import json
 import os
-from .db import col
+from .db import col_guilds, col_users
+from utlits.snapchat_user import get_user_data, get_user_story
 
 __all__ = ["SlashCommands"]
 
@@ -57,3 +58,52 @@ class SlashCommands:
             "content": f"https://discord.com/oauth2/authorize?client_id={client_id}&permissions=59456&scope=applications.commands%20bot"
         })
     
+    @staticmethod
+    def setup_command(data: dict):
+        if data.get("options"):
+            if data["options"][0]["name"] == "user":
+                SlashCommands.setup_user_command(data)
+
+    @staticmethod
+    def setup_user_command(data: dict):
+        username = data["options"][0]["value"]
+        channel = data["options"][1]["value"]
+        message = data["options"][2]["value"] or "{username} has posted a new story!\n{url}"
+        if "{url}" not in message:
+            message += "\n{url}"
+
+        # check if the guild can add this user to database
+        guild = col_guilds.find_one({"guild_id": data["guild_id"]})
+        if not guild:
+            col_guilds.insert_one({
+                "guild_id": data["guild_id"],
+                "channels": [],
+                "users_count": 1  # can add more for premium users only
+            })
+            guild = col_guilds.find_one({"guild_id": data["guild_id"]})
+        if guild["users_count"] >= len(guild["channels"]):
+            return create_response({
+                "content": "You reached the maximum users limit, please upgrade to premium to add more users\n\n"
+                            "You can upgrade to premium by donating **2.99$** per user to the bot owner"
+            })
+
+        # check if snapchat username exists on database
+        username_exists = col_users.find_one({"username": username})
+        if not username_exists:
+            col_users.insert_one({
+                "username": username,
+                "channels": [],
+            })
+        col_users.update_one({"username": username}, {"$push": {"channels": {"channel_id": channel, "message": message}}})
+
+        user = get_user_data(username)
+        if not user:
+            return create_response({
+                "content": "This snapchat username doesn't exists"
+            })
+        fetch("POST", f"/channels/{channel}/messages", json={
+            "content": "**Test message**\n\n" + message.format(username=username, url=f"https://www.snapchat.com/add/{username}")
+        })
+        return create_response({
+            "content": f"[@{username}](https://www.snapchat.com/add/{username}) has been added to <#{channel}>, will send a message when they post a new story",
+        })
