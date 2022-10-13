@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 from discord_interactions import verify_key_decorator, InteractionType, InteractionResponseType
 import argparse
 import os
-from handler.commands import SlashCommands
+from handler.slash_commands import SlashCommands
 import sys
 
 app = Flask(__name__)
