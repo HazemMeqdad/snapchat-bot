@@ -69,8 +69,11 @@ class SlashCommands:
     def setup_user_command(data: dict):
         pprint(data)
         username = data["options"][0]["options"][0]["value"]
-        channel = data["options"][1]["options"][1]["value"]
-        message = data["options"][2]["options"][2]["value"] or "{username} has posted a new story!\n{url}"
+        channel = data["options"][0]["options"][1]["value"]
+        try:
+            message = data["options"][0]["options"][2]["value"]
+        except IndexError:
+            message = "{username} has posted a new story!\n{url}"
         if "{url}" not in message:
             message += "\n{url}"
 
