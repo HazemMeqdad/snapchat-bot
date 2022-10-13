@@ -5,17 +5,13 @@ import argparse
 import os
 from handler.commands import SlashCommands
 import sys
-try:
-    import dotenv
-    dotenv.load_dotenv()
-except ImportError:
-    pass
 
 app = Flask(__name__)
 CLIENT_PUBLIC_KEY = os.getenv("CLIENT_PUBLIC_KEY")
 
 @app.route("/")
 def index():
+    print(os.environ)
     return "The bot is running now!"
 
 @app.route("/interactions", methods=["POST"])
