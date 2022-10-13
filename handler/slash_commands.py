@@ -1,3 +1,4 @@
+from pprint import pprint
 from .api import fetch, create_response, Embed
 import json
 import os
@@ -66,9 +67,10 @@ class SlashCommands:
 
     @staticmethod
     def setup_user_command(data: dict):
-        username = data["options"][0]["value"]
-        channel = data["options"][1]["value"]
-        message = data["options"][2]["value"] or "{username} has posted a new story!\n{url}"
+        pprint(data)
+        username = data["options"][0]["options"][0]["value"]
+        channel = data["options"][1]["options"][1]["value"]
+        message = data["options"][2]["options"][2]["value"] or "{username} has posted a new story!\n{url}"
         if "{url}" not in message:
             message += "\n{url}"
 
