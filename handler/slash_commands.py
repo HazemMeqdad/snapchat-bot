@@ -10,7 +10,7 @@ __all__ = ["SlashCommands"]
 
 class SlashCommands:
     def process(self, res: dict):
-        return getattr(SlashCommands, res["name"]+"_command")(res)
+        return getattr(SlashCommands, res["data"]["name"]+"_command")(res)
 
     @staticmethod
     def ping_command(res: dict):
