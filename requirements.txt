@@ -3,3 +3,4 @@ requests
 discord-interactions
 gunicorn
 pymongo[srv]
+beautifulsoup4
