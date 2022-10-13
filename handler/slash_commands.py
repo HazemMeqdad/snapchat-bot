@@ -61,7 +61,7 @@ class SlashCommands:
     
     @staticmethod
     def setup_command(res: dict):
-        data = data["data"]
+        data = res["data"]
         if data.get("options"):
             if data["options"][0]["name"] == "user":
                 SlashCommands.setup_user_command(res)
