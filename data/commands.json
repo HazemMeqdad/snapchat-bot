@@ -1,0 +1,111 @@
+[
+    {
+        "name": "ping",
+        "description": "Latency to the bot interaction response time",
+        "type": 1
+    },
+    {
+        "name": "help",
+        "description": "Shows help message about the bot",
+        "type": 1
+    },
+    {
+        "name": "about",
+        "description": "Shows information about the bot",
+        "type": 1
+    },
+    {
+        "name": "invite",
+        "description": "Shows the invite link for the bot",
+        "type": 1
+    },
+    {
+        "name": "setup",
+        "description": "Setup the bot",
+        "type": 1,
+        "options": [
+            {
+                "name": "user",
+                "description": "Setup user snapchat to get notifications",
+                "type": 1,
+                "options": [
+                    {
+                        "name": "username",
+                        "description": "Snapchat username",
+                        "type": 3,
+                        "required": true
+                    },
+                    {
+                        "name": "channel",
+                        "description": "Discord channel to send notifications",
+                        "type": 7,
+                        "required": true
+                    },
+                    {
+                        "name": "message",
+                        "description": "Message to send when a new snap is posted",
+                        "type": 3,
+                        "required": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "edit",
+        "description": "Edit user settings",
+        "type": 1,
+        "options": [
+            {
+                "name": "user",
+                "description": "Edit user snapchat to get notifications",
+                "type": 1,
+                "options": [
+                    {
+                        "name": "username",
+                        "description": "Snapchat username",
+                        "type": 3,
+                        "required": true
+                    },
+                    {
+                        "name": "channel",
+                        "description": "Discord channel to send notifications",
+                        "type": 7,
+                        "required": true
+                    },
+                    {
+                        "name": "message",
+                        "description": "Message to send when a new snap is posted",
+                        "type": 3,
+                        "required": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "delete",
+        "description": "Delete user settings",
+        "type": 1,
+        "options": [
+            {
+                "name": "user",
+                "description": "Delete user snapchat to get notifications",
+                "type": 1,
+                "options": [
+                    {
+                        "name": "username",
+                        "description": "Snapchat username",
+                        "type": 3,
+                        "required": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "list",
+        "description": "List all users",
+        "type": 1
+    }
+]
