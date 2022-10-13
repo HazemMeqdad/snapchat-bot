@@ -9,17 +9,17 @@ __all__ = ["SlashCommands"]
 
 
 class SlashCommands:
-    def process(self, data: dict):
-        return getattr(SlashCommands, data["name"]+"_command")(data)
+    def process(self, res: dict):
+        return getattr(SlashCommands, res["name"]+"_command")(res)
 
     @staticmethod
-    def ping_command(data: dict):
+    def ping_command(res: dict):
         return create_response({
             "content": "Pong!"
         })
     
     @staticmethod
-    def help_command(data: dict):
+    def help_command(res: dict):
         embed = Embed(
             title="Help menu",
             description="This is a help menu for snapchat bot, share story notifications to discord\n\n",
@@ -47,27 +47,28 @@ class SlashCommands:
         })
 
     @staticmethod
-    def about_command(data: dict):
+    def about_command(res: dict):
         return create_response({
             "content": "Thanks for ask about me :>!"
         })
 
     @staticmethod
-    def invite_command(data: dict):
+    def invite_command(res: dict):
         client_id = os.environ.get("CLIENT_APPLICATION_ID")
         return create_response({
             "content": f"https://discord.com/oauth2/authorize?client_id={client_id}&permissions=59456&scope=applications.commands%20bot"
         })
     
     @staticmethod
-    def setup_command(data: dict):
+    def setup_command(res: dict):
+        data = data["data"]
         if data.get("options"):
             if data["options"][0]["name"] == "user":
-                SlashCommands.setup_user_command(data)
+                SlashCommands.setup_user_command(res)
 
     @staticmethod
-    def setup_user_command(data: dict):
-        pprint(data)
+    def setup_user_command(res: dict):
+        data = res["data"]
         username = data["options"][0]["options"][0]["value"]
         channel = data["options"][0]["options"][1]["value"]
         try:
@@ -78,14 +79,14 @@ class SlashCommands:
             message += "\n{url}"
 
         # check if the guild can add this user to database
-        guild = col_guilds.find_one({"guild_id": data["guild_id"]})
+        guild = col_guilds.find_one({"guild_id": res["guild_id"]})
         if not guild:
             col_guilds.insert_one({
-                "guild_id": data["guild_id"],
+                "guild_id": res["guild_id"],
                 "channels": [],
                 "users_count": 1  # can add more for premium users only
             })
-            guild = col_guilds.find_one({"guild_id": data["guild_id"]})
+            guild = col_guilds.find_one({"guild_id": res["guild_id"]})
         if guild["users_count"] >= len(guild["channels"]):
             return create_response({
                 "content": "You reached the maximum users limit, please upgrade to premium to add more users\n\n"
