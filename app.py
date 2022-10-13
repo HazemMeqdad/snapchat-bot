@@ -20,7 +20,6 @@ def interactions():
     if request.json["type"] == InteractionType.PING:
         return jsonify({"type": InteractionResponseType.PONG})
     elif request.json["type"] == InteractionType.APPLICATION_COMMAND:
-        print(SlashCommands().process(data))
         return jsonify(SlashCommands().process(data))
     elif request.json["type"] == InteractionType.MESSAGE_COMPONENT:
         ...
