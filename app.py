@@ -11,13 +11,13 @@ CLIENT_PUBLIC_KEY = os.getenv("CLIENT_PUBLIC_KEY")
 
 @app.route("/")
 def index():
-    print(os.environ)
     return "The bot is running now!"
 
 @app.route("/interactions", methods=["POST"])
 @verify_key_decorator(CLIENT_PUBLIC_KEY)
 def interactions():
     data = request.json.get("data")
+    print(data)
     if data["type"] == InteractionType.PING:
         return jsonify({"type": InteractionResponseType.PONG})
     elif data["type"] == InteractionType.APPLICATION_COMMAND:
