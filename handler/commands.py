@@ -1,21 +1,23 @@
 from .api import fetch, create_response, Embed
 import json
+import os
+from .db import col
 
 __all__ = ["SlashCommands"]
 
 
 class SlashCommands:
     def process(self, data: dict):
-        return getattr(SlashCommands, data["name"])(data)
+        return getattr(SlashCommands, data["name"]+"_command")(data)
 
     @staticmethod
-    def ping(data: dict):
+    def ping_command(data: dict):
         return create_response({
             "content": "Pong!"
         })
     
     @staticmethod
-    def help(data: dict):
+    def help_command(data: dict):
         embed = Embed(
             title="Help menu",
             description="This is a help menu for snapchat bot, share story notifications to discord\n\n",
@@ -42,3 +44,16 @@ class SlashCommands:
             "embeds": [embed.to_dict()]
         })
 
+    @staticmethod
+    def about_command(data: dict):
+        return create_response({
+            "content": "Thanks for ask about me :>!"
+        })
+
+    @staticmethod
+    def invite_command(data: dict):
+        client_id = os.environ.get("CLIENT_APPLICATION_ID")
+        return create_response({
+            "content": f"https://discord.com/oauth2/authorize?client_id={client_id}&permissions=59456&scope=applications.commands%20bot"
+        })
+    
